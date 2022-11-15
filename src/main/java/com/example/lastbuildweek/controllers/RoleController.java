@@ -1,8 +1,8 @@
-package com.example.java_venerdi_s7.controller;
+package com.example.lastbuildweek.controllers;
 
-
-import com.example.java_venerdi_s7.entities.Role;
-import com.example.java_venerdi_s7.services.RoleService;
+import com.example.lastbuildweek.entities.Role;
+import com.example.lastbuildweek.entities.RoleType;
+import com.example.lastbuildweek.services.RoleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -46,9 +47,19 @@ public class RoleController {
 	}
 	
 	@PostMapping("/new")
-	public void create(@RequestBody Role role) {
-			rs.save(role);
+	public List<Role> create() {
+		Role roleUser = new Role();
+		Role roleAdmin = new Role();
+		roleUser.setRoleType( RoleType.ROLE_USER );
+		roleAdmin.setRoleType( RoleType.ROLE_ADMIN );
 
+		rs.save(roleUser);
+		rs.save(roleAdmin);
+
+		List<Role> roles = new ArrayList<Role>();
+		roles.add(roleUser);
+        roles.add(roleAdmin);
+		return roles;
 	}
 
 	@PutMapping("")

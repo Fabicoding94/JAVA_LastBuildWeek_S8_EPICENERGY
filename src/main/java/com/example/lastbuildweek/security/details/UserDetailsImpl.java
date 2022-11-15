@@ -1,7 +1,6 @@
-package com.example.java_venerdi_s7.security.details;
+package com.example.lastbuildweek.security.details;
 
-
-import com.example.java_venerdi_s7.entities.Sonda;
+import com.example.lastbuildweek.entities.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,15 +16,14 @@ import java.util.stream.Collectors;
 @Data
 public class UserDetailsImpl implements UserDetails {
 
-    /**
-     *
-     */
     @Serial
     private static final long serialVersionUID = 1L;
 
     private Long id;
 
     private String username;
+
+    private String email;
 
     @JsonIgnore
     private String password;
@@ -39,11 +37,13 @@ public class UserDetailsImpl implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetailsImpl( Long id, String username, String password, boolean enabled,
+    public UserDetailsImpl( Long id, String username,String email, String password,
+                            boolean enabled,
                             Collection<? extends GrantedAuthority> authorities ) {
         super();
         this.id = id;
         this.username = username;
+        this.email = email;
         this.password = password;
         this.accountNonLocked = enabled;
         this.accountNonExpired = enabled;
@@ -52,13 +52,12 @@ public class UserDetailsImpl implements UserDetails {
         this.authorities = authorities;
     }
 
-    public static UserDetailsImpl build( Sonda sonda ) {
-        List<GrantedAuthority> authorities = sonda.getRoles()
+    public static UserDetailsImpl build( User user ) {
+        List<GrantedAuthority> authorities = user.getRoles()
                 .stream()
                 .map( role -> new SimpleGrantedAuthority( role.getRoleType().name() ) )
                 .collect( Collectors.toList() );
-        return new UserDetailsImpl( sonda.getId(), sonda.getUsername(), sonda.getPassword(),
-                sonda.getActive(), authorities );
+        return new UserDetailsImpl(user.getId(), user.getUsername(), user.getEmail(), user.getPassword(),
+                user.getActive(), authorities);
     }
-
 }

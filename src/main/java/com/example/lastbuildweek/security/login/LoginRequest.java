@@ -1,4 +1,4 @@
-package com.example.java_venerdi_s7.security.login;
+package com.example.lastbuildweek.security.login;
 
 import lombok.Getter;
 import lombok.Setter;

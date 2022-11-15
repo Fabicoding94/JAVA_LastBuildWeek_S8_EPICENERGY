@@ -1,4 +1,4 @@
-package com.example.java_venerdi_s7.security.login;
+package com.example.lastbuildweek.security.login;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,7 +15,7 @@ public class LoginResponse {
 	private String token;
 	private Long id;
 	private String username;
-	
+	private String email;
 	private List<String> roles;
 	
 	private Date expirationTime;

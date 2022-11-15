@@ -1,15 +1,15 @@
-package com.example.java_venerdi_s7.repository;
+package com.example.lastbuildweek.repositories;
 
-import com.example.java_venerdi_s7.entities.Sonda;
+import com.example.lastbuildweek.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface SondaRepository extends JpaRepository<Sonda, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
-    Optional<Sonda> findByUsername( String username);
+    Optional<User> findByUsername( String username);
 
 
 }

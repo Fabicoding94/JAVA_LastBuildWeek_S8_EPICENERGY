@@ -1,8 +1,8 @@
-package com.example.java_venerdi_s7.services;
+package com.example.lastbuildweek.services;
 
-import com.example.java_venerdi_s7.entities.Role;
-import com.example.java_venerdi_s7.entities.RoleType;
-import com.example.java_venerdi_s7.repository.RoleRepository;
+import com.example.lastbuildweek.entities.Role;
+import com.example.lastbuildweek.entities.RoleType;
+import com.example.lastbuildweek.repositories.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

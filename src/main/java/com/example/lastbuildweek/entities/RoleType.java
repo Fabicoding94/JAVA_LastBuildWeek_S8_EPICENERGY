@@ -1,5 +1,5 @@
-package com.example.java_venerdi_s7.entities;
+package com.example.lastbuildweek.entities;
 
 public enum RoleType {
-	ROLE_USER, ROLE_ADMIN, ROLE_DEV;
+	ROLE_USER, ROLE_ADMIN;
 }

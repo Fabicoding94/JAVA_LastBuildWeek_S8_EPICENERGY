@@ -1,6 +1,7 @@
-package com.example.java_venerdi_s7.security;
+package com.example.lastbuildweek.security;
 
 
+import com.example.lastbuildweek.security.details.UserDetailsImpl;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,20 +20,15 @@ public class JwtUtils {
 	@Value("${jwt.expirationms}")
 	private Long jwtExpirationMs;
 
-//	public String generateJwtToken(Authentication authentication) {
-//		UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
-//
-//		Date now = new Date();
-//		Date exp = new Date((now).getTime() + jwtExpirationMs);
-//		userPrincipal.setExpirationTime(exp);
-//
-//		return Jwts.builder()
-//				.setSubject((userPrincipal.getUsername()))
-//				.setIssuedAt(now)
-//				.setExpiration(exp)
-//				.signWith(SignatureAlgorithm.HS512, jwtSecret)
-//				.compact();
-//	}
+	public String generateJwtToken( Authentication authentication) {
+		UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
+		Date now = new Date();
+		Date exp = new Date((now).getTime() + jwtExpirationMs);
+		userPrincipal.setExpirationTime(exp);
+		return Jwts.builder().setSubject((userPrincipal.getUsername())).setIssuedAt(now)
+				.setExpiration(exp)
+				.signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
+	}
 
 	public String getUserNameFromJwtToken(String token) {
 		return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();

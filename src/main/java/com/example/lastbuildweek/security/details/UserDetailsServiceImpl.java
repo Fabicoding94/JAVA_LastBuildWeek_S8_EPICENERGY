@@ -1,8 +1,7 @@
-package com.example.java_venerdi_s7.security.details;
+package com.example.lastbuildweek.security.details;
 
-
-import com.example.java_venerdi_s7.entities.Sonda;
-import com.example.java_venerdi_s7.repository.SondaRepository;
+import com.example.lastbuildweek.entities.User;
+import com.example.lastbuildweek.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,14 +14,14 @@ import java.util.Optional;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Autowired
-	SondaRepository sr;
+	UserRepository userRepository;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Optional<Sonda> sonda = sr.findByUsername(username);
+		Optional<User> user = userRepository.findByUsername(username);
 
-		if (sonda.isPresent()) {
-			return UserDetailsImpl.build(sonda.get());
+		if (user.isPresent()) {
+			return UserDetailsImpl.build(user.get());
 		} else {
 			throw new UsernameNotFoundException("User Not Found with username: " + username);
 		}

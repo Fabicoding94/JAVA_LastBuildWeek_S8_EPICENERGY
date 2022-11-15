@@ -1,4 +1,4 @@
-package com.example.java_venerdi_s7.security;
+package com.example.lastbuildweek.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -18,9 +18,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig {
-
-//	@Autowired
-//	UserDetailsServiceImpl userDetailsService;
 
 	@Autowired
 	private AuthEntryPointUnauthorizedJwt unauthorizedHandler;

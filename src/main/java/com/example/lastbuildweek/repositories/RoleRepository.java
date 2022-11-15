@@ -1,8 +1,7 @@
-package com.example.java_venerdi_s7.repository;
+package com.example.lastbuildweek.repositories;
 
-
-import com.example.java_venerdi_s7.entities.Role;
-import com.example.java_venerdi_s7.entities.RoleType;
+import com.example.lastbuildweek.entities.Role;
+import com.example.lastbuildweek.entities.RoleType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
