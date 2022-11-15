@@ -1,4 +1,4 @@
-package com.example.lastbuildweek.security.login;
+package com.example.lastbuildweek.Security;
 
 import lombok.Getter;
 import lombok.Setter;

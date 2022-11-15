@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
@@ -29,105 +30,164 @@ public class UserController {
     @Autowired
     private RoleService roleService;
 
+    //RITORNA TUTTI GLI UTENTI
     @GetMapping("")
+    @PreAuthorize("hasRole('ADMIN')")
     @CrossOrigin
-    public List<User> getAllSonde() {
+    public List<User> getAllUsers() {
+
         return userService.getAll();
+
     }
 
+    //RITORNA TUTTI GLI UTENTI CON POSSIBILITA' DI PAGINAZIONE
     @GetMapping("/pageable")
-    public ResponseEntity<Page<User>> getAllPageable( Pageable p) {
-        Page<User> findAll = userService.getAllPaginate(p);
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Page<User>> getAllUsersPageable( Pageable p ) {
 
-        if (findAll.hasContent()) {
-            return new ResponseEntity<>(findAll, HttpStatus.OK);
+        Page<User> findAll = userService.getAllPaginate( p );
+
+        if( findAll.hasContent() ) {
+            return new ResponseEntity<>( findAll, HttpStatus.OK );
         } else {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>( null, HttpStatus.NOT_FOUND );
         }
 
     }
 
+    // RITORNA UN SINGOLO USER PER ID(PK)
     @GetMapping("/{id}")
-    public ResponseEntity<User> getById(@PathVariable Long id) throws Exception {
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<User> getById( @PathVariable Long id ) throws Exception {
 
-        return new ResponseEntity<>( userService.getById(id), HttpStatus.OK);
-
+        return new ResponseEntity<>(
+                userService.getById( id ),
+                HttpStatus.OK
+        );
     }
 
+    //RITORNA TUTTI GLI UTENTI PER USERNAME(PK)
     @GetMapping("/username/{username}")
-    public ResponseEntity<User> getByUsername(@PathVariable String username) throws Exception {
-        return new ResponseEntity<>( userService.findByUsername(username), HttpStatus.OK);
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<User> getByUsername( @PathVariable String username ) throws Exception {
+
+        return new ResponseEntity<>(
+                userService.findByUsername( username ),
+                HttpStatus.OK
+        );
 
     }
 
+    // AGGIUNGI UN NUOVO UTENTE CON IL BODY COME RICHIESTA
     @PostMapping("/new-raw")
-    public User create(@RequestBody User user) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public User create( @RequestBody User user ) {
+
         try {
             Set<Role> roles = new HashSet<>();
-            roles.add(roleService.getById( 1L ));
-            user.setRoles(roles);
-            userService.save(user);
+            roles.add( roleService.getById( 1L ) );
+            user.setRoles( roles );
+
+            userService.save( user );
 
             return user;
-        } catch (Exception e) {
-            log.error(e.getMessage());
+
+        } catch( Exception e ) {
+
+            log.error( e.getMessage() );
+
         }
+
         return null;
+
     }
 
-    @PostMapping("/new/{nomeCompleto}/{username}/{password}/{email}")
+    //AGGIUNGI UN NUOVO UTENTE CON LE PATHVARIABLE(POCO SICURO A MIO AVVISO)
+    @PostMapping("/new-path/{nomeCompleto}/{username}/{password}/{email}")
+    @PreAuthorize("hasRole('ADMIN')")
     public User create(
             @PathVariable("nomeCompleto") String nomeCompleto,
             @PathVariable("username") String username,
             @PathVariable("password") String password,
             @PathVariable("email") String email
     ) {
+
         try {
+
             User user = new User();
-            user.setNomeCompleto(nomeCompleto);
-            user.setUsername(username);
-            user.setPassword(password);
+            user.setNomeCompleto( nomeCompleto );
+            user.setUsername( username );
+            user.setPassword( password );
             user.setEmail( email );
             user.setActive( true );
+
             Set<Role> rolesUser = new HashSet<>();
             rolesUser.add( roleService.getById( 1L ) );
             user.setRoles( rolesUser );
 
-
-            userService.save(user);
+            userService.save( user );
 
             return user;
-        } catch (Exception e) {
-            log.error(e.getMessage());
+
+        } catch( Exception e ) {
+
+            log.error( e.getMessage() );
+
         }
 
         return null;
 
     }
 
+    //AGGIORNA LE PROPRIETA' DI UN UTENTE
     @PutMapping("")
-    public void update(@RequestBody User user) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public void update( @RequestBody User user ) {
+
         try {
-            userService.save(user);
-        } catch (Exception e) {
-            log.error(e.getMessage());
+
+            userService.save( user );
+
+        } catch( Exception e ) {
+
+            log.error( e.getMessage() );
+
         }
     }
 
+    // AGGIUNGI UN NUOVO RUOLO ALL'UTENTE
     @PutMapping("/{id}/add-role/{roleType}")
-    public void addRole(@PathVariable("id") Long id, @PathVariable("roleType") RoleType roleType) throws Exception {
-        User u = userService.getById(id);
-        u.addRole( roleService.getByRole(roleType));
+    @PreAuthorize("hasRole('ADMIN')")
+    public void addRole(
+            @PathVariable("id") Long id,
+            @PathVariable("roleType") String roleType
+    ) throws Exception {
 
-        userService.update(u);
+        User u = userService.getById( id );
+
+        if( roleType.equals( "ADMIN" ) ) {
+
+            u.addRole( roleService.getByRole( RoleType.ROLE_ADMIN ) );
+
+            userService.update( u );
+
+        }
+
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteById(@PathVariable Long id) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public void deleteById( @PathVariable Long id ) {
+
         try {
-            userService.delete(id);
-        } catch (Exception e) {
-            log.error(e.getMessage());
+
+            userService.delete( id );
+
+        } catch( Exception e ) {
+
+            log.error( e.getMessage() );
+
         }
+
     }
 }

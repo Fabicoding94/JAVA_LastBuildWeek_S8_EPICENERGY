@@ -1,4 +1,4 @@
-package com.example.lastbuildweek.security.login;
+package com.example.lastbuildweek.Security;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,14 +11,13 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 public class LoginResponse {
-	
 	private String token;
-	private Long id;
+	
+	private final String type = "Bearer";
+	private int id;
 	private String username;
 	private String email;
 	private List<String> roles;
-	
 	private Date expirationTime;
-
 
 }

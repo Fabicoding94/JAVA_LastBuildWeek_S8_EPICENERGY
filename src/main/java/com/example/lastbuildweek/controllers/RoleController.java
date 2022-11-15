@@ -22,14 +22,19 @@ public class RoleController {
 
 	@Autowired
 	private RoleService rs;
-	
+
+	// LISTA DEI RUOLI DISPONIBILI
 	@GetMapping("")
-	public List<Role> getAllUsers() {
+	@PreAuthorize( "hasRole('ADMIN')" )
+	public List<Role> getAllRoles() {
+
 		return rs.getAll();
+
 	}
-	
+
+	// LISTA DEI RUOLI DISPONIBILI PAGINABILE
 	@GetMapping("/pageable")
-	public ResponseEntity<Page<Role>> getAllPageable(Pageable p) {
+	public ResponseEntity<Page<Role>> getAllRolesPageable(Pageable p) {
 		Page<Role> findAll = rs.getAllPaginate(p);
 
 		if (findAll.hasContent()) {
@@ -39,15 +44,21 @@ public class RoleController {
 		}
 
 	}
-	
+
+	// RITORNA UN SINGOLO RUOLO PER ID(PK)
 	@GetMapping("/{id}")
+	@PreAuthorize( "hasRole('ADMIN')" )
 	public ResponseEntity<Role> readById(@PathVariable Long id) throws Exception {
+
 			return new ResponseEntity<>(rs.getById(id), HttpStatus.OK);			
 
 	}
-	
+
+	// SETTA DI DEFAULT I DUE RUOLI DISPONIBILI
 	@PostMapping("/new")
+	@PreAuthorize( "hasRole('ADMIN')" )
 	public List<Role> create() {
+
 		Role roleUser = new Role();
 		Role roleAdmin = new Role();
 		roleUser.setRoleType( RoleType.ROLE_USER );
@@ -59,25 +70,41 @@ public class RoleController {
 		List<Role> roles = new ArrayList<Role>();
 		roles.add(roleUser);
         roles.add(roleAdmin);
+
 		return roles;
+
 	}
 
+	// MODIFICA I RUOLI
 	@PutMapping("")
+	@PreAuthorize( "hasRole('ADMIN')" )
 	public void update(@RequestBody Role role) {
+
 		try {
+
 			rs.save(role);
+
 		} catch (Exception e) {
+
 			log.error(e.getMessage());
+
 		}
+
 	}
 
+	// ELIMINA RUOLO
 	@DeleteMapping("/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
 	public void deleteById(@PathVariable Long id) {
+
 		try {
+
 			rs.deleteById(id);
+
 		} catch (Exception e) {
+
 			log.error(e.getMessage());
+
 		}
 	}
 }
