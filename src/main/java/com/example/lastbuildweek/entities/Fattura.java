@@ -3,6 +3,7 @@ package com.example.lastbuildweek.entities;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Builder
 @AllArgsConstructor
@@ -11,16 +12,18 @@ import javax.persistence.*;
 @Setter
 @ToString
 @Entity
-public class Cliente {
+public class Fattura {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "partitaIva", nullable = false)
-    private Long partitaIva;
+    @Column(name = "numero", nullable = false)
+    private long numero;
 
-    @OneToOne
-    private User user;
+    private long ClienteID;
 
-    private IndirizzoLegale IndirizzoLegale;
+    private int Anno;
 
+    private LocalDate Data;
 
+    private int Importo;
 }
