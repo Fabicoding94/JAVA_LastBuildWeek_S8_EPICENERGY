@@ -19,14 +19,6 @@ public class Comune {
     @Column(name = "comune_id", nullable = false)
     private Long comuneId;
 
-
     private String Nome;
-
-    @ManyToOne
-    @JoinColumn(name="provincia_id")
-    @JsonManagedReference
-    private Provincia provincia;
-
-
-
+    private String nomeProvincia;
 }

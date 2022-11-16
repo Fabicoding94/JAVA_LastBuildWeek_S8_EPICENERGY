@@ -23,9 +23,6 @@ public class Provincia {
     private long ProvinciaID;
     private String Nome;
     private String Sigla;
+    private String regione;
 
-    @ToString.Exclude
-    @OneToMany(mappedBy="provincia", cascade=CascadeType.ALL)
-    @JsonBackReference
-    private List<Comune> comuni;
 }

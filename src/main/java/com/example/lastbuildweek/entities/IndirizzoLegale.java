@@ -17,7 +17,7 @@ public class IndirizzoLegale {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "indirizzoLegale", nullable = false)
-    private long IndirizzoLegaleID;
+    private Long indirizzoLegaleId;
 
     private String Via;
     private int Civico;

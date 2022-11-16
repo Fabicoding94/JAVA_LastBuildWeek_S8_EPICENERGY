@@ -20,7 +20,7 @@ public class Cliente {
     @OneToOne
     private User user;
 
-    private IndirizzoLegale IndirizzoLegale;
+//    private IndirizzoLegale IndirizzoLegale;
 
 
 }
