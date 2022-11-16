@@ -102,6 +102,30 @@ public class UserController {
 
     }
 
+    // CREAZIONE ACCOUNT ADMIN
+//    @PostMapping("/new-raw-admin")
+//    public User createBasicAdmin( @RequestBody User user ) {
+//
+//        try {
+//            Set<Role> roles = new HashSet<>();
+//            roles.add( roleService.getById( 1L ) );
+//            roles.add( roleService.getById( 2L ) );
+//            user.setRoles( roles );
+//
+//            userService.save( user );
+//
+//            return user;
+//
+//        } catch( Exception e ) {
+//
+//            log.error( e.getMessage() );
+//
+//        }
+//
+//        return null;
+//
+//    }
+
     //AGGIUNGI UN NUOVO UTENTE CON LE PATHVARIABLE(POCO SICURO A MIO AVVISO)
     @PostMapping("/new-path/{nomeCompleto}/{username}/{password}/{email}")
     @PreAuthorize("hasRole('ADMIN')")
