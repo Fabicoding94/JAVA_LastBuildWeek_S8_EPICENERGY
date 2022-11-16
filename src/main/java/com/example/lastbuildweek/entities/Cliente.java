@@ -51,5 +51,8 @@ public class Cliente {
     @JsonBackReference
     private List<Fattura> fatture = new java.util.ArrayList<>();
 
+    public void addDataInserimento() {
+        this.dataInserimento = LocalDate.now();
+    }
 
 }

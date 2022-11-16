@@ -4,6 +4,7 @@ import com.example.lastbuildweek.entities.Provincia;
 import com.example.lastbuildweek.entities.Role;
 import com.example.lastbuildweek.entities.RoleType;
 import com.example.lastbuildweek.entities.User;
+import com.example.lastbuildweek.services.ComuneService;
 import com.example.lastbuildweek.services.ProvinciaService;
 import com.example.lastbuildweek.services.RoleService;
 import com.example.lastbuildweek.services.UserService;
@@ -37,6 +38,9 @@ public class UserController {
     @Autowired
     private ProvinciaService ps;
 
+    @Autowired
+    ComuneService cs;
+
     //RITORNA TUTTI GLI UTENTI
     @GetMapping("")
     @PreAuthorize("hasRole('ADMIN')")
@@ -48,23 +52,9 @@ public class UserController {
     }
 
     @PostMapping("/add-provincia")
-    public void addProvincia() throws IOException {
-        CSVReader reader = new CSVReader();
-            for (String prov : reader.listProvince()) {
-                String[] line = prov.split(";");
-                String sigla = line[0];
-                String provincia = line[1];
-                String regione = line[2];
-                Provincia newProv = Provincia.builder()
-                        .sigla(sigla)
-                        .nome(provincia)
-                        .regione(regione)
-                        .build();
-                ps.save(newProv);
-            }
-        }
-
-
+    public String addProvincia() throws IOException {
+        return ps.addProvincia();
+    }
 
     //RITORNA TUTTI GLI UTENTI CON POSSIBILITA' DI PAGINAZIONE
     @GetMapping("/pageable")

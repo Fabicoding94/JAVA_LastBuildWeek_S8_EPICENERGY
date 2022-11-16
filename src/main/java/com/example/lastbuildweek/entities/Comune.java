@@ -15,10 +15,7 @@ import javax.persistence.*;
 public class Comune {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "comune_id", nullable = false)
-    private Long comuneId;
-
     private String nome;
+
     private String nomeProvincia;
 }

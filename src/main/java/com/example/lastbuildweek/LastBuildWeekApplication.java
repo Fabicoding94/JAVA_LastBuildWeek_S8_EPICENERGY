@@ -12,17 +12,13 @@ import java.util.Arrays;
 
 @SpringBootApplication
 public class LastBuildWeekApplication implements CommandLineRunner {
-
-    @Autowired
-    UserRepository ur;
+    
     public static void main( String[] args ) {
         SpringApplication.run( LastBuildWeekApplication.class, args );
     }
 
     @Override
     public void run( String... args ) throws Exception {
-        CSVReader reader = new CSVReader();
-        System.out.println( Arrays.toString( reader.listProvince() ) );
-        System.out.println( Arrays.toString( reader.listComuni() ) );
+
     }
 }
