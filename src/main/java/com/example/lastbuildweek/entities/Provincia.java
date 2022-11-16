@@ -19,10 +19,10 @@ public class Provincia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "provincia", nullable = false)
+    private long provinciaID;
 
-    private long ProvinciaID;
-    private String Nome;
-    private String Sigla;
+    private String nome;
+    private String sigla;
     private String regione;
 
 }

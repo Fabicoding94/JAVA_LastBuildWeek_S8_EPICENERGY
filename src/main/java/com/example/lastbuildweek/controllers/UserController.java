@@ -1,10 +1,13 @@
 package com.example.lastbuildweek.controllers;
 
+import com.example.lastbuildweek.entities.Provincia;
 import com.example.lastbuildweek.entities.Role;
 import com.example.lastbuildweek.entities.RoleType;
 import com.example.lastbuildweek.entities.User;
+import com.example.lastbuildweek.services.ProvinciaService;
 import com.example.lastbuildweek.services.RoleService;
 import com.example.lastbuildweek.services.UserService;
+import com.example.lastbuildweek.utils.CSVReader;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -30,6 +34,9 @@ public class UserController {
     @Autowired
     private RoleService roleService;
 
+    @Autowired
+    private ProvinciaService ps;
+
     //RITORNA TUTTI GLI UTENTI
     @GetMapping("")
     @PreAuthorize("hasRole('ADMIN')")
@@ -39,6 +46,25 @@ public class UserController {
         return userService.getAll();
 
     }
+
+    @PostMapping("/add-provincia")
+    public void addProvincia() throws IOException {
+        CSVReader reader = new CSVReader();
+            for (String prov : reader.listProvince()) {
+                String[] line = prov.split(";");
+                String sigla = line[0];
+                String provincia = line[1];
+                String regione = line[2];
+                Provincia newProv = Provincia.builder()
+                        .sigla(sigla)
+                        .nome(provincia)
+                        .regione(regione)
+                        .build();
+                ps.save(newProv);
+            }
+        }
+
+
 
     //RITORNA TUTTI GLI UTENTI CON POSSIBILITA' DI PAGINAZIONE
     @GetMapping("/pageable")

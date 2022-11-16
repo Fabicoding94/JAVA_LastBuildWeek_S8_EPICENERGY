@@ -1,10 +1,12 @@
 package com.example.lastbuildweek.utils;
 
 import com.example.lastbuildweek.entities.Provincia;
+import com.example.lastbuildweek.services.ProvinciaService;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+
 
 import java.io.File;
 import java.io.IOException;
@@ -15,8 +17,8 @@ public class CSVReader {
     private static final String CSC_FILE_PATH_PROVINCE = "CSVcomuni&provicie/province-italiane.csv";
     private static final String CSC_FILE_PATH_COMUNI = "CSVcomuni&provicie/comuni-italiani.csv";
 
-//    @Autowired
-//    ProvinciaService ps;
+    @Autowired
+    ProvinciaService ps;
 
     public  String[] listProvince() throws IOException {
 
@@ -42,7 +44,7 @@ public class CSVReader {
             String regione = line[2];
             Provincia newProv = Provincia.builder()
                     .build();
-//            ps.save(newProv);
+           ps.save(newProv);
         }
     }
 

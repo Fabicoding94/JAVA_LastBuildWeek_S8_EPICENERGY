@@ -19,6 +19,6 @@ public class Comune {
     @Column(name = "comune_id", nullable = false)
     private Long comuneId;
 
-    private String Nome;
+    private String nome;
     private String nomeProvincia;
 }

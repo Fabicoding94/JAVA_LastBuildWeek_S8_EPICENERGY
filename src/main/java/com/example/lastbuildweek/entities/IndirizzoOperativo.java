@@ -17,11 +17,11 @@ public class IndirizzoOperativo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "indirizzoOperativo", nullable = false)
-    private Long IndirizzoOperativoID;
+    private Long indirizzoOperativoID;
 
     private String Via;
-    private int Civico;
-    private int Cap;
+    private int civico;
+    private int cap;
 
 
     @ManyToOne

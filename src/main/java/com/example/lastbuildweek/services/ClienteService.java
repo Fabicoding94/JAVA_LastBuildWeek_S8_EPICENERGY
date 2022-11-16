@@ -16,9 +16,12 @@ public class ClienteService {
     @Autowired
     ClienteRepository clienteRepository;
 
-    public void save(Cliente cliente){
+    public void save(Cliente cliente) {
+
+
         clienteRepository.save(cliente);
     };
+
 
     public Cliente getById(Long id) throws Exception {
         Optional<Cliente> cliente = clienteRepository.findById(id);

@@ -1,5 +1,6 @@
 package com.example.lastbuildweek.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -17,13 +18,17 @@ public class Fattura {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "numero", nullable = false)
-    private long numero;
+    private Long numero;
 
-    private long ClienteID;
+    private int anno;
 
-    private int Anno;
+    private LocalDate data;
 
-    private LocalDate Data;
+    private int importo;
 
-    private int Importo;
+    @ManyToOne
+    @JoinColumn(name = "cliente_partita_iva")
+    @JsonManagedReference
+    private Cliente cliente;
+
 }

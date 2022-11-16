@@ -19,9 +19,9 @@ public class IndirizzoLegale {
     @Column(name = "indirizzoLegale", nullable = false)
     private Long indirizzoLegaleId;
 
-    private String Via;
-    private int Civico;
-    private int Cap;
+    private String via;
+    private int civico;
+    private int cap;
 
     @ManyToOne
     @JoinColumn(name = "comune_id")
