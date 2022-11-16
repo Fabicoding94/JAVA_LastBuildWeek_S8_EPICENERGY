@@ -67,7 +67,7 @@ public class RoleController {
 		rs.save(roleUser);
 		rs.save(roleAdmin);
 
-		List<Role> roles = new ArrayList<Role>();
+		List<Role> roles = new ArrayList<>();
 		roles.add(roleUser);
         roles.add(roleAdmin);
 

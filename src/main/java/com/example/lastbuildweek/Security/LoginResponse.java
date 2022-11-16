@@ -11,6 +11,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 public class LoginResponse {
+
 	private String token;
 	
 	private final String type = "Bearer";

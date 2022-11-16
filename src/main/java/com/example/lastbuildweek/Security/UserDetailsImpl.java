@@ -19,10 +19,11 @@ public class UserDetailsImpl implements UserDetails {
 	private String email;
 	@JsonIgnore
 	private String password;
-	private boolean accountNonLocked = true;
-	private boolean accountNonExpired = false;
-	private boolean credentialsNonExpired = true;
-	private boolean enabled = true;
+	private boolean accountNonLocked;
+	private boolean accountNonExpired;
+	private boolean credentialsNonExpired;
+	private boolean enabled;
+
 	private Date expirationTime;
 
 	private Collection<? extends GrantedAuthority> authorities;

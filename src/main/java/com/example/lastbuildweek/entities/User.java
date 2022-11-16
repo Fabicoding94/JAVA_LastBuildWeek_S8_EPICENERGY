@@ -1,6 +1,5 @@
 package com.example.lastbuildweek.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -45,6 +44,8 @@ public class User {
     @JoinTable(name = "user_roles", //Nome della tabbella che verrà creata
             joinColumns = @JoinColumn(name = "user_id"),// Crea colonna
             inverseJoinColumns = @JoinColumn(name = "role_id"))
+
+    @ToString.Exclude
     private Set<Role> roles = new HashSet<Role>();
 
     private Boolean active = true;
