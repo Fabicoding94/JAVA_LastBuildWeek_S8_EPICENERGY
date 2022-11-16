@@ -12,8 +12,8 @@ import java.io.IOException;
 @Getter
 @Setter
 public class CSVReader {
-    private static final String CSC_FILE_PATH_PROVINCE = "CSV comuni&provicie/province-italiane.csv";
-    private static final String CSC_FILE_PATH_COMUNI = "CSV comuni&provicie/comuni-italiani.csv";
+    private static final String CSC_FILE_PATH_PROVINCE = "CSVcomuni&provicie/province-italiane.csv";
+    private static final String CSC_FILE_PATH_COMUNI = "CSVcomuni&provicie/comuni-italiani.csv";
 
 //    @Autowired
 //    ProvinciaService ps;
@@ -40,7 +40,8 @@ public class CSVReader {
             String sigla = line[0];
             String provincia = line[1];
             String regione = line[2];
-            Provincia newProv = Provincia.builder().build();
+            Provincia newProv = Provincia.builder()
+                    .build();
 //            ps.save(newProv);
         }
     }
