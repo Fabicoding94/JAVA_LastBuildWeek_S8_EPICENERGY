@@ -1,11 +1,8 @@
 package com.example.lastbuildweek.controllers;
 
-import com.example.lastbuildweek.entities.Cliente;
-import com.example.lastbuildweek.entities.Role;
-import com.example.lastbuildweek.entities.RoleType;
-import com.example.lastbuildweek.entities.User;
-import com.example.lastbuildweek.services.ClienteService;
-import com.example.lastbuildweek.services.RoleService;
+import com.example.lastbuildweek.entities.*;
+import com.example.lastbuildweek.services.*;
+import com.example.lastbuildweek.utils.ClienteRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -31,6 +28,16 @@ public class ClienteController {
     @Autowired
     private RoleService roleService;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private IndirizzoLegaleService indirizzoLegaleService;
+
+    @Autowired
+    private IndirizzoOperativoService indirizzoOperativoService;
+
+
 
     // RITORNA UN SINGOLO CLIENTE PER ID(PK)
     @GetMapping("/{id}")
@@ -43,13 +50,42 @@ public class ClienteController {
         );
     }
 
+    @GetMapping("/nome/")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Page<Cliente>> getByNomeContatto(Pageable p) {
+        return new ResponseEntity<>(
+                clienteService.getByNomeContatto( p ),
+                HttpStatus.OK
+        );
+    }
+
+
+
 
     // AGGIUNGI UN NUOVO CLIENTE CON IL BODY COME RICHIESTA
     @PostMapping("/new-raw")
     @PreAuthorize("hasRole('ADMIN')")
-    public Cliente create( @RequestBody Cliente cliente ) {
+    public Cliente create( @RequestBody ClienteRequest clienteRequest ) {
+
 
         try {
+            Cliente cliente = Cliente.builder()
+                    .partitaIva(clienteRequest.getPartitaIva())
+                    .user(userService.getById((long) clienteRequest.getUserId()))
+                    .indirizzoLegale(indirizzoLegaleService.getById((long) clienteRequest.getIndirizzoLegaleId()))
+                    .indirizzoOperativo(indirizzoOperativoService.getById((long) clienteRequest.getIndirizzoOperativoId()))
+                    .email(clienteRequest.getEmail())
+                    .pec(clienteRequest.getPec())
+                    .emailContatto(clienteRequest.getEmailContatto())
+                    .nomeContatto(clienteRequest.getNomeContatto())
+                    .cognomeContatto(clienteRequest.getCognomeContatto())
+                    .telefonoContatto(clienteRequest.getTelefonoContatto())
+                    .ragioneSociale(this.parser(clienteRequest.getRagioneSociale()))
+                    .fatturatoAnnuo(clienteRequest.getFatturatoAnnuo())
+                    .dataInserimento(LocalDate.now())
+                    .dataUltimoContatto(LocalDate.now())
+                    .build();
+
 
 
             clienteService.save( cliente );
@@ -66,42 +102,28 @@ public class ClienteController {
 
     }
 
+    public RagioneSociale parser(String stringa){
+        switch(stringa){
+            case "PA" -> {
+                return RagioneSociale.PA;
+            }
+            case "SAS" -> {
+                return RagioneSociale.SAS;
+            }
+            case "SPA" -> {
+                return RagioneSociale.SPA;
+            }
+            case "SRL" -> {
+                return RagioneSociale.SRL;
+            }
 
-    //AGGIUNGI UN NUOVO CLIENTE CON LE PATHVARIABLE(POCO SICURO A MIO AVVISO)
-//    @PostMapping("/new-path/{nomeContatto}/{cognomeContatto}/{password}/{email}")
-//    @PreAuthorize("hasRole('ADMIN')")
-//    public User create(
-//            @PathVariable("nomeContatto") String nomeCompleto,
-//            @PathVariable("cognomeContatto") String cognome,
-//            @PathVariable("telefonoContatto") int telefono,
-//            @PathVariable("emailContatto") String emailC,
-//            @PathVariable("email") String email,
-//            @PathVariable("pec") String pec
-//
-//
-//
-//    ) {
-//
-//        try {
-//
-//            Cliente cliente = new Cliente();
-//
-//
-//
-//
-//            clienteService.save( cliente );
-//
-//            return cliente;
-//
-//        } catch( Exception e ) {
-//
-//            log.error( e.getMessage() );
-//
-//        }
-//
-//        return null;
-//
-//    }
+        }
+        return RagioneSociale.PA;
+
+    }
+
+
+
 
     //AGGIORNA LE PROPRIETA' DI UN CLIENTE
     @PutMapping("")

@@ -27,7 +27,7 @@ public class Cliente {
 
     @ManyToOne
     @JoinColumn(name = "indirizzo_legale_id")
-    private IndirizzoLegale Indirizzolegale;
+    private IndirizzoLegale indirizzoLegale;
 
     @ManyToOne
     @JoinColumn(name = "indirizzo_operativo_id")
@@ -38,7 +38,7 @@ public class Cliente {
     private String emailContatto;
     private String nomeContatto;
     private String cognomeContatto;
-    private int telefonoContatto;
+    private Long telefonoContatto;
     private int fatturatoAnnuo;
 
     private LocalDate dataInserimento ;

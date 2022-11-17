@@ -19,12 +19,12 @@ public class IndirizzoOperativo {
     @Column(name = "indirizzoOperativo", nullable = false)
     private Long indirizzoOperativoID;
 
-    private String Via;
+    private String via;
     private int civico;
     private int cap;
 
 
     @ManyToOne
     @JoinColumn(name = "comune_id")
-    private Comune comuneId;
+    private Comune comune;
 }

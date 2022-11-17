@@ -1,6 +1,5 @@
 package com.example.lastbuildweek.controllers;
 
-import com.example.lastbuildweek.entities.Comune;
 import com.example.lastbuildweek.entities.Provincia;
 import com.example.lastbuildweek.services.ProvinciaService;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +26,7 @@ public class ProvinciaController {
         return provinciaService.addProvincia();
     }
 
-    // RITORNA UN SINGOLO Comun PER ID(PK)
+    // RITORNA UNA SINGOLA PROVINCIA PER ID(PK)
     @GetMapping("/{sigla}")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Provincia> get( @PathVariable("sigla") String sigla ) throws Exception {
@@ -39,7 +38,7 @@ public class ProvinciaController {
     }
 
 
-    // AGGIUNGI UN NUOVO COMUNE CON IL BODY COME RICHIESTA
+    // AGGIUNGI UNA NUOVA PROVINCIA CON IL BODY COME RICHIESTA
     @PostMapping("/new-raw")
     @PreAuthorize("hasRole('ADMIN')")
     public Provincia create( @RequestBody Provincia provincia ) {
@@ -63,7 +62,7 @@ public class ProvinciaController {
 
 
 
-    //AGGIORNA LE PROPRIETA' DI UN COMUNE
+    //AGGIORNA LE PROPRIETA' DI UN PROVINCIA
     @PutMapping("")
     @PreAuthorize("hasRole('ADMIN')")
     public void update( @RequestBody Provincia provincia ) {

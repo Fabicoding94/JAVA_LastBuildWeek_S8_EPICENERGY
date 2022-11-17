@@ -24,8 +24,8 @@ public class IndirizzoLegale {
     private int cap;
 
     @ManyToOne
-    @JoinColumn(name = "comune_id")
-    private Comune comuneId;
+    @JoinColumn(name = "comune")
+    private Comune comune;
 
 
 

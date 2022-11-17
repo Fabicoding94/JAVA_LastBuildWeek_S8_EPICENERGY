@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -45,5 +46,9 @@ public class ClienteService {
 
     public Page<Cliente> getAllPaginate(Pageable p) {
         return clienteRepository.findAll(p);
+    }
+
+    public Page<Cliente> getByNomeContatto(Pageable p) {
+        return clienteRepository.findByNomeContatto(p);
     }
 }
