@@ -15,6 +15,9 @@ import javax.persistence.*;
 public class Comune {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long comuneId;
+
     private String nome;
 
     private String nomeProvincia;
