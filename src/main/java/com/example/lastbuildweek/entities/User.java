@@ -1,5 +1,6 @@
 package com.example.lastbuildweek.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,9 +22,6 @@ public class User {
     @Column(name = "user_id", nullable = false)
     private Long id;
 
-    @OneToOne
-    private Cliente cliente;
-
     private String nomeCompleto;
 
     private String email;
@@ -33,8 +31,8 @@ public class User {
 
     private String password;
 
-    public User( String nomeCompleto, String username, String password ) {
-
+    public User( String nomeCompleto, String username, String password, String email ) {
+        this.email = email;
         this.nomeCompleto = nomeCompleto;
         this.username = username;
         this.password = password;
@@ -44,7 +42,6 @@ public class User {
     @JoinTable(name = "user_roles", //Nome della tabbella che verrà creata
             joinColumns = @JoinColumn(name = "user_id"),// Crea colonna
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-
     @ToString.Exclude
     private Set<Role> roles = new HashSet<Role>();
 

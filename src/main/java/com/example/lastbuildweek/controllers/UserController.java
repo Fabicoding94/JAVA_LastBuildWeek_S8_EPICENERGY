@@ -1,5 +1,6 @@
 package com.example.lastbuildweek.controllers;
 
+
 import com.example.lastbuildweek.entities.Role;
 import com.example.lastbuildweek.entities.RoleType;
 import com.example.lastbuildweek.entities.User;
@@ -80,7 +81,7 @@ public class UserController {
 
     // AGGIUNGI UN NUOVO UTENTE CON IL BODY COME RICHIESTA
     @PostMapping("/new-raw")
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public User create( @RequestBody User user ) {
 
         try {
@@ -117,7 +118,9 @@ public class UserController {
             return user;
 
         } catch( Exception e ) {
+
             log.error( e.getMessage() );
+
         }
 
         return null;

@@ -20,6 +20,7 @@ import java.util.List;
 @RequestMapping("/api/roles")
 public class RoleController {
 
+
 	@Autowired
 	private RoleService rs;
 
@@ -56,7 +57,7 @@ public class RoleController {
 
 	// SETTA DI DEFAULT I DUE RUOLI DISPONIBILI
 	@PostMapping("/new")
-	@PreAuthorize( "hasRole('ADMIN')" )
+//	@PreAuthorize( "hasRole('ADMIN')" )
 	public List<Role> create() {
 
 		Role roleUser = new Role();
