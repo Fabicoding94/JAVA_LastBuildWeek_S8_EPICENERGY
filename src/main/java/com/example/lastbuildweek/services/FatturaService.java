@@ -1,7 +1,5 @@
 package com.example.lastbuildweek.services;
 
-import com.example.lastbuildweek.entities.Cliente;
-import com.example.lastbuildweek.entities.Comune;
 import com.example.lastbuildweek.entities.Fattura;
 import com.example.lastbuildweek.repositories.FatturaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
@@ -42,5 +41,28 @@ public class FatturaService {
 
     public Page<Fattura> getAllPaginate(Pageable p) {
         return fatturaRepository.findAll(p);
+    }
+
+    // RITORNA UNA LISTA DI FATTURE FILTRATE PER CLIENTE ID(PK)
+    public Page<Fattura> filterByClienteId(Long id, Pageable p) {
+        return fatturaRepository.findFatturaByClienteId( id, p );
+    }
+
+    // RITORNA UNA LISTA DI FATTURE FILTRATE PER STATO
+
+
+    // RITORNA UNA LISTA DI FATTURE FILTRATE PER DATA(LOCALDATE)
+    public Page<Fattura> filterFatturaByDataLocal( LocalDate data, Pageable p) {
+        return fatturaRepository.findFatturaByDataLocal( data, p );
+    }
+
+    // RITORNA UNA LISTA DI FATTURE FILTRATE PER ANNO
+    public Page<Fattura> filterFatturaByAnno( int anno, Pageable p) {
+        return fatturaRepository.findFatturaByAnno( anno, p );
+    }
+
+    // RITORNA UNA LISTA DI FATTURE FILTRATE PER RANGE DI IMPORTI
+    public Page<Fattura> filterFatturaByRange(int dataIniziale, int dataFinale, Pageable p) {
+        return fatturaRepository.findFatturaByRange( dataIniziale, dataFinale, p );
     }
 }

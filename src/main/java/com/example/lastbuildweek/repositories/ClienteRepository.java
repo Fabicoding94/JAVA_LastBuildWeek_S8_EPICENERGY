@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -16,37 +17,47 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
     //QUERIES DI ORDINAMENTO
     @Query(
-         value="select c from Cliente c order by c.nomeContatto asc"
+            value = "select c from Cliente c order by c.nomeContatto asc"
     )
-    Page<Cliente> findByNomeContatto(Pageable pageable);
+    Page<Cliente> findByNomeContatto( Pageable pageable );
+
     @Query(
-            value="select c from Cliente c order by c.fatturatoAnnuo asc"
+            value = "select c from Cliente c order by c.fatturatoAnnuo asc"
     )
-    Page<Cliente> findByFatturatoAnnuo( Pageable pageable);
+    Page<Cliente> findByFatturatoAnnuo( Pageable pageable );
 
     @Query("select c from Cliente c order by c.dataInserimento asc"
     )
-    Page<Cliente> findByDataInserimento( Pageable pageable);
+    Page<Cliente> findByDataInserimento( Pageable pageable );
 
     @Query("select c from Cliente c order by c.dataUltimoContatto asc"
     )
-    Page<Cliente> findByDataUltimoContatto( Pageable pageable);
+    Page<Cliente> findByDataUltimoContatto( Pageable pageable );
 
     @Query("select c from Cliente c order by c.indirizzoLegale.comune.nomeProvincia asc"
     )
-    Page<Cliente> findByNomeProvincia( Pageable pageable);
+    Page<Cliente> findByNomeProvincia( Pageable pageable );
 
     //---------------------------------FINE--------------------------------------------//
 
     //QUERIES DI FILTRAGGIO
     @Query("select c from Cliente c where c.fatturatoAnnuo<=:param"
     )
-    Page<Cliente> filterByFatturatoAnnuo(@Param("param" ) int fatturato, Pageable pageable);
+    Page<Cliente> filterByFatturatoAnnuo( @Param("param") int fatturato, Pageable pageable );
 
-    @Query("select c from Cliente c where c.dataInserimento=:param"
+    @Query("select c from Cliente c where c.dataInserimento>=:param"
     )
-    Page<Cliente> filterByDataInserimento(@Param("param" ) int dataInserimento, Pageable pageable);
+    Page<Cliente> filterByDataInserimento( @Param("param") LocalDate dataInserimento, Pageable pageable );
 
+    @Query("select c from Cliente c where c.dataUltimoContatto>=:param"
+    )
+    Page<Cliente> filterByDataUltimoContatto( @Param("param") LocalDate dataUltimoContatto, Pageable pageable );
+
+    @Query(
+            value = "select c from Cliente c where upper(c.nomeContatto) like upper(concat('%', :nome, "
+                    + "'%')) and upper(c.cognomeContatto) like upper(concat('%', :cognome, '%') )"
+    )
+    Page<Cliente> filterByNomeECognome( @Param("nome") String nome, @Param("cognome") String cognome, Pageable pageable );
 
 
 }
