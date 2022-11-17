@@ -50,6 +50,8 @@ public class ClienteController {
         );
     }
 
+    //RITORNA UNA PAGINAZIONE DI TUTTI I CLIENTI ORDINATI PER NOME
+
     @GetMapping("/nome/")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Page<Cliente>> getByNomeContatto(Pageable p) {
@@ -58,6 +60,68 @@ public class ClienteController {
                 HttpStatus.OK
         );
     }
+
+
+    //RITORNA UNA PAGINAZIONE DI TUTTI I CLIENTI ORDINATI PER FATTURATO ANNUO
+
+    @GetMapping("/fatturato-annuo/")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Page<Cliente>> getByFatturatoAnnuo(Pageable p) {
+        return new ResponseEntity<>(
+                clienteService.getByFatturatoAnnuo( p ),
+                HttpStatus.OK
+        );
+    }
+    //RITORNA UNA PAGINAZIONE DI TUTTI I CLIENTI ORDINATI PER FATTURATO ANNUO
+    @GetMapping("/data-inserimento/")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Page<Cliente>> getByDataInserimento(Pageable p) {
+        return new ResponseEntity<>(
+                clienteService.getByDataInserimento( p ),
+                HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/data-ultimo-contatto/")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Page<Cliente>> getByDataUltimoContatto(Pageable p) {
+        return new ResponseEntity<>(
+                clienteService.getByDataUltimoContatto( p ),
+                HttpStatus.OK
+        );
+    }
+
+    //RITORNA UNA LISTA DI CLIENTI ORDINATI PER PROVINCIA
+    @GetMapping("/provincia/")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Page<Cliente>> getByNomeProvincia(Pageable p) {
+        return new ResponseEntity<>(
+                clienteService.getByNomeProvincia( p ),
+                HttpStatus.OK
+        );
+    }
+
+    //RITORNA UNA LISTA DI CLIENTI FILTRATI PER FATTURATO ANNUO < DI UN PARAMETRO DATO
+    @GetMapping("/fatturato/{fatturato}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Page<Cliente>> getByFatturato(@PathVariable("fatturato") int fatturato, Pageable p) {
+        return new ResponseEntity<>(
+                clienteService.getByFatturato(fatturato, p ),
+                HttpStatus.OK
+        );
+    }
+
+//    //RITORNA UNA LISTA DI CLIENTI FILTRATI PER DATA INSERIMENTO
+//    @GetMapping("/fatturato/{fatturato}")
+//    @PreAuthorize("hasRole('ADMIN')")
+//    public ResponseEntity<Page<Cliente>> getByFatturato(@PathVariable("fatturato") int fatturato, Pageable p) {
+//        return new ResponseEntity<>(
+//                clienteService.getByFatturato(fatturato, p ),
+//                HttpStatus.OK
+//        );
+//    }
+
+
 
 
 

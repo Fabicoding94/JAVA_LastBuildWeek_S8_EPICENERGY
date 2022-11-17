@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,4 +52,38 @@ public class ClienteService {
     public Page<Cliente> getByNomeContatto(Pageable p) {
         return clienteRepository.findByNomeContatto(p);
     }
+
+
+    public Page<Cliente> getByFatturatoAnnuo(Pageable p) {
+        return clienteRepository.findByFatturatoAnnuo(p);
+    }
+
+
+    public Page<Cliente> getByDataInserimento(Pageable p) {
+        return clienteRepository.findByDataInserimento(p);
+    }
+
+    public Page<Cliente> getByDataUltimoContatto(Pageable p) {
+        return clienteRepository.findByDataUltimoContatto(p);
+    }
+
+
+    public Page<Cliente> getByDataInserimento(LocalDate dataInserimento, Pageable p) {
+        return clienteRepository.findByDataInserimento(p);
+    }
+
+
+
+
+    public Page<Cliente> getByNomeProvincia(Pageable p) {
+        return clienteRepository.findByNomeProvincia(p);
+    }
+
+    //
+
+    public Page<Cliente> getByFatturato(int fatturato, Pageable p) {
+        return clienteRepository.filterByFatturatoAnnuo(fatturato, p);
+    }
+
+
 }
