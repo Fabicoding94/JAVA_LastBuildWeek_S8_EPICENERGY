@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/api/provincie")
+@RequestMapping("/api/province")
 @Slf4j
 @CrossOrigin(origins = "*")
 public class ProvinciaController {
