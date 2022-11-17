@@ -16,10 +16,13 @@ import java.util.List;
 @Entity
 public class Provincia {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false)
+    private Long provinciaId;
+
     private String nome;
 
-    @Id
-    @Column(nullable = false, unique = true)
     private String sigla;
 
     private String regione;
