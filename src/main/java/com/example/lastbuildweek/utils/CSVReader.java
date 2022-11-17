@@ -36,16 +36,16 @@ public class CSVReader {
         return readString.split("\r?\n");
     }
 
-    public void registraProvince() throws IOException {
-        for (String prov : listProvince()) {
-            String[] line = prov.split(";");
-            String sigla = line[0];
-            String provincia = line[1];
-            String regione = line[2];
-            Provincia newProv = Provincia.builder()
-                    .build();
-           ps.save(newProv);
-        }
-    }
+//    public void registraProvince() throws IOException {
+//        for (String prov : listProvince()) {
+//            String[] line = prov.split(";");
+//            String sigla = line[0];
+//            String provincia = line[1];
+//            String regione = line[2];
+//            Provincia newProv = Provincia.builder()
+//                    .build();
+//           ps.save(newProv);
+//        }
+//    }
 
 }

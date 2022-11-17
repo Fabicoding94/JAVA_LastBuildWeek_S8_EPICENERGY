@@ -32,7 +32,7 @@ public class ClienteController {
     private RoleService roleService;
 
 
-    // RITORNA UN SINGOLO USER PER ID(PK)
+    // RITORNA UN SINGOLO CLIENTE PER ID(PK)
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Cliente> getById(@PathVariable Long id ) throws Exception {
@@ -67,7 +67,7 @@ public class ClienteController {
     }
 
 
-    //AGGIUNGI UN NUOVO UTENTE CON LE PATHVARIABLE(POCO SICURO A MIO AVVISO)
+    //AGGIUNGI UN NUOVO CLIENTE CON LE PATHVARIABLE(POCO SICURO A MIO AVVISO)
 //    @PostMapping("/new-path/{nomeContatto}/{cognomeContatto}/{password}/{email}")
 //    @PreAuthorize("hasRole('ADMIN')")
 //    public User create(
@@ -103,7 +103,7 @@ public class ClienteController {
 //
 //    }
 
-    //AGGIORNA LE PROPRIETA' DI UN UTENTE
+    //AGGIORNA LE PROPRIETA' DI UN CLIENTE
     @PutMapping("")
     @PreAuthorize("hasRole('ADMIN')")
     public void update( @RequestBody Cliente cliente ) {
