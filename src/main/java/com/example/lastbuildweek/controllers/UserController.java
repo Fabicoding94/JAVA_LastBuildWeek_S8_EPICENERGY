@@ -105,6 +105,7 @@ public class UserController {
 
     // CREAZIONE ACCOUNT ADMIN
     @PostMapping("/new-raw-admin")
+    @PreAuthorize("hasRole('ADMIN')")
     public User createBasicAdmin( @RequestBody User user ) {
 
         try {
@@ -128,41 +129,41 @@ public class UserController {
     }
 
     //AGGIUNGI UN NUOVO UTENTE CON LE PATHVARIABLE(POCO SICURO A MIO AVVISO)
-    @PostMapping("/new-path/{nomeCompleto}/{username}/{password}/{email}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public User create(
-            @PathVariable("nomeCompleto") String nomeCompleto,
-            @PathVariable("username") String username,
-            @PathVariable("password") String password,
-            @PathVariable("email") String email
-    ) {
-
-        try {
-
-            User user = new User();
-            user.setNomeCompleto( nomeCompleto );
-            user.setUsername( username );
-            user.setPassword( password );
-            user.setEmail( email );
-            user.setActive( true );
-
-            Set<Role> rolesUser = new HashSet<>();
-            rolesUser.add( roleService.getById( 1L ) );
-            user.setRoles( rolesUser );
-
-            userService.save( user );
-
-            return user;
-
-        } catch( Exception e ) {
-
-            log.error( e.getMessage() );
-
-        }
-
-        return null;
-
-    }
+//    @PostMapping("/new-path/{nomeCompleto}/{username}/{password}/{email}")
+//    @PreAuthorize("hasRole('ADMIN')")
+//    public User create(
+//            @PathVariable("nomeCompleto") String nomeCompleto,
+//            @PathVariable("username") String username,
+//            @PathVariable("password") String password,
+//            @PathVariable("email") String email
+//    ) {
+//
+//        try {
+//
+//            User user = new User();
+//            user.setNomeCompleto( nomeCompleto );
+//            user.setUsername( username );
+//            user.setPassword( password );
+//            user.setEmail( email );
+//            user.setActive( true );
+//
+//            Set<Role> rolesUser = new HashSet<>();
+//            rolesUser.add( roleService.getById( 1L ) );
+//            user.setRoles( rolesUser );
+//
+//            userService.save( user );
+//
+//            return user;
+//
+//        } catch( Exception e ) {
+//
+//            log.error( e.getMessage() );
+//
+//        }
+//
+//        return null;
+//
+//    }
 
     //AGGIORNA LE PROPRIETA' DI UN UTENTE
     @PutMapping("")
