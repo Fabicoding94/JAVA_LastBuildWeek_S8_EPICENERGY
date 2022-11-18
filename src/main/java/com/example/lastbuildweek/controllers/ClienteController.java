@@ -23,19 +23,6 @@ public class ClienteController {
     @Autowired
     private ClienteService clienteService;
 
-    @Autowired
-    private RoleService roleService;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private IndirizzoLegaleService indirizzoLegaleService;
-
-    @Autowired
-    private IndirizzoOperativoService indirizzoOperativoService;
-
-
     // RITORNA UN SINGOLO CLIENTE PER ID(PK)
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
@@ -153,27 +140,8 @@ public class ClienteController {
 
 
         try {
-            Cliente cliente = Cliente.builder()
-                    .partitaIva( clienteRequest.getPartitaIva() )
-                    .user( userService.getById( ( long ) clienteRequest.getUserId() ) )
-                    .indirizzoLegale( indirizzoLegaleService.getById( ( long ) clienteRequest.getIndirizzoLegaleId() ) )
-                    .indirizzoOperativo( indirizzoOperativoService.getById( ( long ) clienteRequest.getIndirizzoOperativoId() ) )
-                    .email( clienteRequest.getEmail() )
-                    .pec( clienteRequest.getPec() )
-                    .emailContatto( clienteRequest.getEmailContatto() )
-                    .nomeContatto( clienteRequest.getNomeContatto() )
-                    .cognomeContatto( clienteRequest.getCognomeContatto() )
-                    .telefonoContatto( clienteRequest.getTelefonoContatto() )
-                    .ragioneSociale( this.parser( clienteRequest.getRagioneSociale() ) )
-                    .fatturatoAnnuo( clienteRequest.getFatturatoAnnuo() )
-                    .dataInserimento( LocalDate.now() )
-                    .dataUltimoContatto( LocalDate.now() )
-                    .build();
 
-
-            clienteService.save( cliente );
-
-            return cliente;
+            return clienteService.createAndSave( clienteRequest );
 
         } catch( Exception e ) {
 
@@ -184,27 +152,6 @@ public class ClienteController {
         return null;
 
     }
-
-    public RagioneSociale parser( String stringa ) {
-        switch (stringa) {
-            case "PA" -> {
-                return RagioneSociale.PA;
-            }
-            case "SAS" -> {
-                return RagioneSociale.SAS;
-            }
-            case "SPA" -> {
-                return RagioneSociale.SPA;
-            }
-            case "SRL" -> {
-                return RagioneSociale.SRL;
-            }
-
-        }
-        return RagioneSociale.PA;
-
-    }
-
 
     //AGGIORNA LE PROPRIETA' DI UN CLIENTE
     @PutMapping("")

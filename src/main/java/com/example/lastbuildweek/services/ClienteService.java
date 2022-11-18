@@ -2,6 +2,8 @@ package com.example.lastbuildweek.services;
 
 import com.example.lastbuildweek.entities.Cliente;
 import com.example.lastbuildweek.repositories.ClienteRepository;
+import com.example.lastbuildweek.utils.ClienteRequest;
+import com.example.lastbuildweek.utils.RagioneSocialeParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,8 +19,37 @@ public class ClienteService {
     @Autowired
     ClienteRepository clienteRepository;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private IndirizzoLegaleService indirizzoLegaleService;
+
+    @Autowired
+    private IndirizzoOperativoService indirizzoOperativoService;
+
     public void save(Cliente cliente) {
         clienteRepository.save(cliente);
+    };
+
+    public Cliente createAndSave( ClienteRequest clienteRequest) throws Exception {
+        Cliente cliente = Cliente.builder()
+                .partitaIva( clienteRequest.getPartitaIva() )
+                .user( userService.getById( ( long ) clienteRequest.getUserId() ) )
+                .indirizzoLegale( indirizzoLegaleService.getById( ( long ) clienteRequest.getIndirizzoLegaleId() ) )
+                .indirizzoOperativo( indirizzoOperativoService.getById( ( long ) clienteRequest.getIndirizzoOperativoId() ) )
+                .email( clienteRequest.getEmail() )
+                .pec( clienteRequest.getPec() )
+                .emailContatto( clienteRequest.getEmailContatto() )
+                .nomeContatto( clienteRequest.getNomeContatto() )
+                .cognomeContatto( clienteRequest.getCognomeContatto() )
+                .telefonoContatto( clienteRequest.getTelefonoContatto() )
+                .ragioneSociale( RagioneSocialeParser.parse( clienteRequest.getRagioneSociale() ) )
+                .fatturatoAnnuo( clienteRequest.getFatturatoAnnuo() )
+                .dataInserimento( LocalDate.now() )
+                .dataUltimoContatto( LocalDate.now() )
+                .build();
+        return clienteRepository.save(cliente);
     };
 
 
