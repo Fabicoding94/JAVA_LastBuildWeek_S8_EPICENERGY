@@ -2,7 +2,7 @@ package com.example.lastbuildweek.controllers;
 
 import com.example.lastbuildweek.entities.*;
 import com.example.lastbuildweek.services.*;
-import com.example.lastbuildweek.utils.ClienteRequest;
+import com.example.lastbuildweek.utils.ClienteConverter;
 import com.example.lastbuildweek.utils.ConverDate;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/api/clienti")
@@ -102,10 +100,8 @@ public class ClienteController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Page<Cliente>> getByDataInserimento( @PathVariable("data") String stringData, Pageable p ) {
 
-        LocalDate data = LocalDate.parse( stringData );
-
         return new ResponseEntity<>(
-                clienteService.filterByDataInserimento( data, p ),
+                clienteService.filterByDataInserimento( ConverDate.convertDate( stringData ), p ),
                 HttpStatus.OK
         );
     }
@@ -136,12 +132,11 @@ public class ClienteController {
     // AGGIUNGI UN NUOVO CLIENTE CON IL BODY COME RICHIESTA
     @PostMapping("/new-raw")
     @PreAuthorize("hasRole('ADMIN')")
-    public Cliente create( @RequestBody ClienteRequest clienteRequest ) {
-
+    public Cliente create( @RequestBody ClienteConverter clienteConverter ) {
 
         try {
 
-            return clienteService.createAndSave( clienteRequest );
+            return clienteService.createAndSave( clienteConverter );
 
         } catch( Exception e ) {
 
@@ -167,6 +162,7 @@ public class ClienteController {
             log.error( e.getMessage() );
 
         }
+
     }
 
 

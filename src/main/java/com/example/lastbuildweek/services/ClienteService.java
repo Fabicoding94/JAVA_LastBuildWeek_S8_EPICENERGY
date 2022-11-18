@@ -2,7 +2,7 @@ package com.example.lastbuildweek.services;
 
 import com.example.lastbuildweek.entities.Cliente;
 import com.example.lastbuildweek.repositories.ClienteRepository;
-import com.example.lastbuildweek.utils.ClienteRequest;
+import com.example.lastbuildweek.utils.ClienteConverter;
 import com.example.lastbuildweek.utils.RagioneSocialeParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,23 +32,24 @@ public class ClienteService {
         clienteRepository.save(cliente);
     };
 
-    public Cliente createAndSave( ClienteRequest clienteRequest) throws Exception {
+    public Cliente createAndSave( ClienteConverter clienteConverter ) throws Exception {
         Cliente cliente = Cliente.builder()
-                .partitaIva( clienteRequest.getPartitaIva() )
-                .user( userService.getById( ( long ) clienteRequest.getUserId() ) )
-                .indirizzoLegale( indirizzoLegaleService.getById( ( long ) clienteRequest.getIndirizzoLegaleId() ) )
-                .indirizzoOperativo( indirizzoOperativoService.getById( ( long ) clienteRequest.getIndirizzoOperativoId() ) )
-                .email( clienteRequest.getEmail() )
-                .pec( clienteRequest.getPec() )
-                .emailContatto( clienteRequest.getEmailContatto() )
-                .nomeContatto( clienteRequest.getNomeContatto() )
-                .cognomeContatto( clienteRequest.getCognomeContatto() )
-                .telefonoContatto( clienteRequest.getTelefonoContatto() )
-                .ragioneSociale( RagioneSocialeParser.parse( clienteRequest.getRagioneSociale() ) )
-                .fatturatoAnnuo( clienteRequest.getFatturatoAnnuo() )
+                .partitaIva( clienteConverter.getPartitaIva() )
+                .user( userService.getById( ( long ) clienteConverter.getUserId() ) )
+                .indirizzoLegale( indirizzoLegaleService.getById( ( long ) clienteConverter.getIndirizzoLegaleId() ) )
+                .indirizzoOperativo( indirizzoOperativoService.getById( ( long ) clienteConverter.getIndirizzoOperativoId() ) )
+                .email( clienteConverter.getEmail() )
+                .pec( clienteConverter.getPec() )
+                .emailContatto( clienteConverter.getEmailContatto() )
+                .nomeContatto( clienteConverter.getNomeContatto() )
+                .cognomeContatto( clienteConverter.getCognomeContatto() )
+                .telefonoContatto( clienteConverter.getTelefonoContatto() )
+                .ragioneSociale( RagioneSocialeParser.parse( clienteConverter.getRagioneSociale() ) )
+                .fatturatoAnnuo( clienteConverter.getFatturatoAnnuo() )
                 .dataInserimento( LocalDate.now() )
                 .dataUltimoContatto( LocalDate.now() )
                 .build();
+
         return clienteRepository.save(cliente);
     };
 

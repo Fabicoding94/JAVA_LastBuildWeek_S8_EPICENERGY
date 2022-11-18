@@ -1,9 +1,6 @@
 package com.example.lastbuildweek.utils;
 
-import com.example.lastbuildweek.entities.RagioneSociale;
 import lombok.*;
-
-import javax.persistence.Entity;
 
 @Builder
 @AllArgsConstructor
@@ -11,7 +8,7 @@ import javax.persistence.Entity;
 @Getter
 @Setter
 @ToString
-public class ClienteRequest {
+public class ClienteConverter {
 
     private int partitaIva;
     private int userId;
