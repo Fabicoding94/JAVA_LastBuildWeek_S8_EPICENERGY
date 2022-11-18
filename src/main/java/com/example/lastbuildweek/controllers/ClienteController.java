@@ -3,6 +3,7 @@ package com.example.lastbuildweek.controllers;
 import com.example.lastbuildweek.entities.*;
 import com.example.lastbuildweek.services.*;
 import com.example.lastbuildweek.utils.ClienteRequest;
+import com.example.lastbuildweek.utils.ConverDate;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,9 +14,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/api/clienti")
@@ -25,24 +23,10 @@ public class ClienteController {
     @Autowired
     private ClienteService clienteService;
 
-    @Autowired
-    private RoleService roleService;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private IndirizzoLegaleService indirizzoLegaleService;
-
-    @Autowired
-    private IndirizzoOperativoService indirizzoOperativoService;
-
-
-
     // RITORNA UN SINGOLO CLIENTE PER ID(PK)
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Cliente> getById(@PathVariable Long id ) throws Exception {
+    public ResponseEntity<Cliente> getById( @PathVariable Long id ) throws Exception {
 
         return new ResponseEntity<>(
                 clienteService.getById( id ),
@@ -54,7 +38,7 @@ public class ClienteController {
 
     @GetMapping("/nome/")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Page<Cliente>> getByNomeContatto(Pageable p) {
+    public ResponseEntity<Page<Cliente>> getByNomeContatto( Pageable p ) {
         return new ResponseEntity<>(
                 clienteService.getByNomeContatto( p ),
                 HttpStatus.OK
@@ -66,16 +50,17 @@ public class ClienteController {
 
     @GetMapping("/fatturato-annuo/")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Page<Cliente>> getByFatturatoAnnuo(Pageable p) {
+    public ResponseEntity<Page<Cliente>> getByFatturatoAnnuo( Pageable p ) {
         return new ResponseEntity<>(
                 clienteService.getByFatturatoAnnuo( p ),
                 HttpStatus.OK
         );
     }
+
     //RITORNA UNA PAGINAZIONE DI TUTTI I CLIENTI ORDINATI PER FATTURATO ANNUO
     @GetMapping("/data-inserimento/")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Page<Cliente>> getByDataInserimento(Pageable p) {
+    public ResponseEntity<Page<Cliente>> getByDataInserimento( Pageable p ) {
         return new ResponseEntity<>(
                 clienteService.getByDataInserimento( p ),
                 HttpStatus.OK
@@ -84,7 +69,7 @@ public class ClienteController {
 
     @GetMapping("/data-ultimo-contatto/")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Page<Cliente>> getByDataUltimoContatto(Pageable p) {
+    public ResponseEntity<Page<Cliente>> getByDataUltimoContatto( Pageable p ) {
         return new ResponseEntity<>(
                 clienteService.getByDataUltimoContatto( p ),
                 HttpStatus.OK
@@ -94,37 +79,59 @@ public class ClienteController {
     //RITORNA UNA LISTA DI CLIENTI ORDINATI PER PROVINCIA
     @GetMapping("/provincia/")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Page<Cliente>> getByNomeProvincia(Pageable p) {
+    public ResponseEntity<Page<Cliente>> getByNomeProvincia( Pageable p ) {
         return new ResponseEntity<>(
                 clienteService.getByNomeProvincia( p ),
                 HttpStatus.OK
         );
     }
 
+
     //RITORNA UNA LISTA DI CLIENTI FILTRATI PER FATTURATO ANNUO < DI UN PARAMETRO DATO
     @GetMapping("/fatturato/{fatturato}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Page<Cliente>> getByFatturato(@PathVariable("fatturato") int fatturato, Pageable p) {
+    public ResponseEntity<Page<Cliente>> getByFatturato( @PathVariable("fatturato") int fatturato, Pageable p ) {
         return new ResponseEntity<>(
-                clienteService.getByFatturato(fatturato, p ),
+                clienteService.filterByFatturato( fatturato, p ),
                 HttpStatus.OK
         );
     }
 
-//    //RITORNA UNA LISTA DI CLIENTI FILTRATI PER DATA INSERIMENTO
-//    @GetMapping("/fatturato/{fatturato}")
-//    @PreAuthorize("hasRole('ADMIN')")
-//    public ResponseEntity<Page<Cliente>> getByFatturato(@PathVariable("fatturato") int fatturato, Pageable p) {
-//        return new ResponseEntity<>(
-//                clienteService.getByFatturato(fatturato, p ),
-//                HttpStatus.OK
-//        );
-//    }
+    //    //RITORNA UNA LISTA DI CLIENTI FILTRATI PER DATA INSERIMENTO
+    @GetMapping("/filter-data-inserimento/{data}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Page<Cliente>> getByDataInserimento( @PathVariable("data") String stringData, Pageable p ) {
 
+        LocalDate data = LocalDate.parse( stringData );
 
+        return new ResponseEntity<>(
+                clienteService.filterByDataInserimento( data, p ),
+                HttpStatus.OK
+        );
+    }
 
+    // RITORNA UNA LISTA DI CLIENTI FILTRATI PER DATA ULTIMO CONTATTO
+    @GetMapping("/filter-data-ultimo-contatto/{data}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Page<Cliente>> getByDataUltimoInserimento( @PathVariable("data") String stringData, Pageable p ) {
 
+        return new ResponseEntity<>(
+                clienteService.filterByDataUltimoContatto( ConverDate.convertDate( stringData ), p ),
+                HttpStatus.OK
+        );
+    }
 
+    // RITORNA UNA LISTA DI CLIENTI FILTRATI PER NOME E COGNOME
+    @GetMapping("/filter-nome-cognome/{nome}/{cognome}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Page<Cliente>> filterByNomeECognome( @PathVariable("nome") String nome,
+                                                               @PathVariable("cognome") String cognome,
+                                                               Pageable p ) {
+        return new ResponseEntity<>(
+                clienteService.filterByNomeECognome( nome, cognome, p ),
+                HttpStatus.OK
+        );
+    }
 
     // AGGIUNGI UN NUOVO CLIENTE CON IL BODY COME RICHIESTA
     @PostMapping("/new-raw")
@@ -133,28 +140,8 @@ public class ClienteController {
 
 
         try {
-            Cliente cliente = Cliente.builder()
-                    .partitaIva(clienteRequest.getPartitaIva())
-                    .user(userService.getById((long) clienteRequest.getUserId()))
-                    .indirizzoLegale(indirizzoLegaleService.getById((long) clienteRequest.getIndirizzoLegaleId()))
-                    .indirizzoOperativo(indirizzoOperativoService.getById((long) clienteRequest.getIndirizzoOperativoId()))
-                    .email(clienteRequest.getEmail())
-                    .pec(clienteRequest.getPec())
-                    .emailContatto(clienteRequest.getEmailContatto())
-                    .nomeContatto(clienteRequest.getNomeContatto())
-                    .cognomeContatto(clienteRequest.getCognomeContatto())
-                    .telefonoContatto(clienteRequest.getTelefonoContatto())
-                    .ragioneSociale(this.parser(clienteRequest.getRagioneSociale()))
-                    .fatturatoAnnuo(clienteRequest.getFatturatoAnnuo())
-                    .dataInserimento(LocalDate.now())
-                    .dataUltimoContatto(LocalDate.now())
-                    .build();
 
-
-
-            clienteService.save( cliente );
-
-            return cliente;
+            return clienteService.createAndSave( clienteRequest );
 
         } catch( Exception e ) {
 
@@ -165,29 +152,6 @@ public class ClienteController {
         return null;
 
     }
-
-    public RagioneSociale parser(String stringa){
-        switch(stringa){
-            case "PA" -> {
-                return RagioneSociale.PA;
-            }
-            case "SAS" -> {
-                return RagioneSociale.SAS;
-            }
-            case "SPA" -> {
-                return RagioneSociale.SPA;
-            }
-            case "SRL" -> {
-                return RagioneSociale.SRL;
-            }
-
-        }
-        return RagioneSociale.PA;
-
-    }
-
-
-
 
     //AGGIORNA LE PROPRIETA' DI UN CLIENTE
     @PutMapping("")

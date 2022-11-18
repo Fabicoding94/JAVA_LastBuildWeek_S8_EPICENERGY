@@ -2,6 +2,8 @@ package com.example.lastbuildweek.services;
 
 import com.example.lastbuildweek.entities.Cliente;
 import com.example.lastbuildweek.repositories.ClienteRepository;
+import com.example.lastbuildweek.utils.ClienteRequest;
+import com.example.lastbuildweek.utils.RagioneSocialeParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,10 +19,37 @@ public class ClienteService {
     @Autowired
     ClienteRepository clienteRepository;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private IndirizzoLegaleService indirizzoLegaleService;
+
+    @Autowired
+    private IndirizzoOperativoService indirizzoOperativoService;
+
     public void save(Cliente cliente) {
-
-
         clienteRepository.save(cliente);
+    };
+
+    public Cliente createAndSave( ClienteRequest clienteRequest) throws Exception {
+        Cliente cliente = Cliente.builder()
+                .partitaIva( clienteRequest.getPartitaIva() )
+                .user( userService.getById( ( long ) clienteRequest.getUserId() ) )
+                .indirizzoLegale( indirizzoLegaleService.getById( ( long ) clienteRequest.getIndirizzoLegaleId() ) )
+                .indirizzoOperativo( indirizzoOperativoService.getById( ( long ) clienteRequest.getIndirizzoOperativoId() ) )
+                .email( clienteRequest.getEmail() )
+                .pec( clienteRequest.getPec() )
+                .emailContatto( clienteRequest.getEmailContatto() )
+                .nomeContatto( clienteRequest.getNomeContatto() )
+                .cognomeContatto( clienteRequest.getCognomeContatto() )
+                .telefonoContatto( clienteRequest.getTelefonoContatto() )
+                .ragioneSociale( RagioneSocialeParser.parse( clienteRequest.getRagioneSociale() ) )
+                .fatturatoAnnuo( clienteRequest.getFatturatoAnnuo() )
+                .dataInserimento( LocalDate.now() )
+                .dataUltimoContatto( LocalDate.now() )
+                .build();
+        return clienteRepository.save(cliente);
     };
 
 
@@ -67,22 +95,26 @@ public class ClienteService {
         return clienteRepository.findByDataUltimoContatto(p);
     }
 
-
-    public Page<Cliente> getByDataInserimento(LocalDate dataInserimento, Pageable p) {
-        return clienteRepository.findByDataInserimento(p);
-    }
-
-
-
-
     public Page<Cliente> getByNomeProvincia(Pageable p) {
         return clienteRepository.findByNomeProvincia(p);
     }
 
-    //
+    ////////////////////////////////////////////////////////////////
 
-    public Page<Cliente> getByFatturato(int fatturato, Pageable p) {
+    public Page<Cliente> filterByFatturato( int fatturato, Pageable p) {
         return clienteRepository.filterByFatturatoAnnuo(fatturato, p);
+    }
+
+    public Page<Cliente> filterByDataInserimento(LocalDate dataInserimento, Pageable p) {
+        return clienteRepository.filterByDataInserimento( dataInserimento, p );
+    }
+
+    public Page<Cliente> filterByDataUltimoContatto(LocalDate data, Pageable p) {
+        return clienteRepository.filterByDataUltimoContatto( data, p );
+    }
+
+    public Page<Cliente> filterByNomeECognome(String nome, String cognome, Pageable p) {
+        return clienteRepository.filterByNomeECognome( nome, cognome, p );
     }
 
 
