@@ -149,13 +149,13 @@ public class ClienteController {
     }
 
     //AGGIORNA LE PROPRIETA' DI UN CLIENTE
-    @PutMapping("")
+    @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public void update( @RequestBody Cliente cliente ) {
+    public void update( @RequestBody ClienteConverter clienteConverter, @PathVariable("id") int id  ) {
 
         try {
 
-            clienteService.save( cliente );
+            clienteService.createAndUpdate( clienteConverter, id );
 
         } catch( Exception e ) {
 
