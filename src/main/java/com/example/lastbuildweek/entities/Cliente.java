@@ -26,11 +26,11 @@ public class Cliente {
     @OneToOne
     private User user;
 
-    @ManyToOne
+    @ManyToOne(cascade = { CascadeType.ALL })
     @JoinColumn(name = "indirizzo_legale_id")
     private IndirizzoLegale indirizzoLegale;
 
-    @ManyToOne
+    @ManyToOne(cascade = { CascadeType.ALL })
     @JoinColumn(name = "indirizzo_operativo_id")
     private IndirizzoOperativo indirizzoOperativo;
 

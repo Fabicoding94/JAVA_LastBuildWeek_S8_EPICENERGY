@@ -28,7 +28,6 @@ public class Fattura {
 
     @ManyToOne
     @JoinColumn(name = "cliente_partita_iva")
-    @JsonManagedReference
     private Cliente cliente;
 
 }

@@ -27,4 +27,5 @@ public class IndirizzoOperativo {
     @ManyToOne
     @JoinColumn(name = "comune_id")
     private Comune comune;
+
 }

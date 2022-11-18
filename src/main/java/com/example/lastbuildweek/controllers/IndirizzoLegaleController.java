@@ -1,6 +1,7 @@
 package com.example.lastbuildweek.controllers;
 
 import com.example.lastbuildweek.entities.IndirizzoLegale;
+import com.example.lastbuildweek.repositories.IndirizzoLegaleRepository;
 import com.example.lastbuildweek.services.ComuneService;
 import com.example.lastbuildweek.services.IndirizzoLegaleService;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -23,6 +26,18 @@ public class IndirizzoLegaleController {
     @Autowired
     private ComuneService comuneService;
 
+    @Autowired
+    private IndirizzoLegaleRepository indirizzoLegaleRepository;
+
+    @GetMapping("")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<List<IndirizzoLegale>> get() throws Exception {
+
+        return new ResponseEntity<>(
+                indirizzoLegaleRepository.findAll( ),
+                HttpStatus.OK
+        );
+    }
 
     // RITORNA UN SINGOLO INDIRIZZO-LEGALE PER ID(PK)
     @GetMapping("/{id}")
@@ -44,8 +59,6 @@ public class IndirizzoLegaleController {
             @RequestParam("civico") Integer civico,
             @RequestParam("cap") Integer cap,
             @RequestParam("nomeComune") String nomeComune
-
-
     ) {
 
         try {

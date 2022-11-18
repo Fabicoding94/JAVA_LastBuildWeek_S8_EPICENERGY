@@ -1,6 +1,7 @@
 package com.example.lastbuildweek.controllers;
 
 import com.example.lastbuildweek.entities.Provincia;
+import com.example.lastbuildweek.repositories.ProvinciaRepository;
 import com.example.lastbuildweek.services.ProvinciaService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/province")
@@ -19,6 +21,15 @@ public class ProvinciaController {
 
     @Autowired
     private ProvinciaService provinciaService;
+
+    @Autowired
+    private ProvinciaRepository provinciaRepository;
+
+    @GetMapping("/nome/{provincia}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<Provincia> getByNome( @PathVariable("provincia") String provincia) throws IOException {
+        return provinciaRepository.findByNomeContainingIgnoreCase(provincia);
+    }
 
     @PostMapping("/add-provincia")
     @PreAuthorize("hasRole('ADMIN')")

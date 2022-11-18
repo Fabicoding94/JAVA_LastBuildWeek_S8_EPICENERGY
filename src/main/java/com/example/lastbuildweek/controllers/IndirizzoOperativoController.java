@@ -1,6 +1,8 @@
 package com.example.lastbuildweek.controllers;
 
+import com.example.lastbuildweek.entities.IndirizzoLegale;
 import com.example.lastbuildweek.entities.IndirizzoOperativo;
+import com.example.lastbuildweek.repositories.IndirizzoOperativoRepository;
 import com.example.lastbuildweek.services.ComuneService;
 import com.example.lastbuildweek.services.IndirizzoOperativoService;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/indirizzo-operativo")
@@ -22,6 +26,19 @@ public class IndirizzoOperativoController {
     @Autowired
     private ComuneService comuneService;
 
+    @Autowired
+    private IndirizzoOperativoRepository indirizzoOperativoRepository;
+
+
+    @GetMapping("")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<List<IndirizzoOperativo>> get() throws Exception {
+
+        return new ResponseEntity<>(
+                indirizzoOperativoRepository.findAll( ),
+                HttpStatus.OK
+        );
+    }
 
     // RITORNA UN SINGOLO INDIRIZZO-OPERATIVO PER ID(PK)
     @GetMapping("/{id}")
