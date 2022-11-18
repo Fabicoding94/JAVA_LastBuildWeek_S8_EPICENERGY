@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/clienti")
 @Slf4j
@@ -20,6 +22,15 @@ import org.springframework.web.bind.annotation.*;
 public class ClienteController {
     @Autowired
     private ClienteService clienteService;
+
+    @GetMapping("")
+    @PreAuthorize("hasRole('ADMIN')")
+    @CrossOrigin
+    public List<Cliente> getAllClienti() {
+
+        return clienteService.getAll();
+
+    }
 
     // RITORNA UN SINGOLO CLIENTE PER ID(PK)
     @GetMapping("/{id}")
@@ -151,18 +162,18 @@ public class ClienteController {
     //AGGIORNA LE PROPRIETA' DI UN CLIENTE
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public void update( @RequestBody ClienteConverter clienteConverter, @PathVariable("id") int id  ) {
+    public Cliente update( @RequestBody ClienteConverter clienteConverter, @PathVariable("id") int id  ) {
 
         try {
 
-            clienteService.createAndUpdate( clienteConverter, id );
+            return clienteService.createAndUpdate( clienteConverter, id );
 
         } catch( Exception e ) {
 
             log.error( e.getMessage() );
 
         }
-
+        return null;
     }
 
 
